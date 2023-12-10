@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 # Function to create a placeholder plot
 def create_placeholder_plot():
@@ -36,39 +37,53 @@ def main():
 
             except Exception as e:
                 st.error(f'Error loading your data')
+
     with col2:
         optionFilter = st.selectbox('FORWARD FILTER', ('7', '11'))
-        optionInversion = st.selectbox('INVERSION METHODS', ('-', 'SVD', 'LM'))
+        
+        containerInversion = st.container(border=True)
+        with containerInversion:
+            optionInversion = st.selectbox('INVERSION METHODS', ('-', 'SVD', 'LM'))
 
-        if optionInversion == 'SVD':
-            numIter = st.number_input('Number of Iter')
-            epsilon = st.number_input('Epsilon')
-            
+            if optionInversion == 'SVD':
+                numIter = st.number_input('Number of Iter')
+                epsilon = st.number_input('Epsilon')
+                
 
-        if optionInversion == 'LM':
-            numIter = st.number_input('Number of Iter')
-            dumping = st.number_input('Damping Factor')
+            if optionInversion == 'LM':
+                numIter = st.number_input('Number of Iter')
+                dumping = st.number_input('Damping Factor')
             
 
         model_data = pd.DataFrame({
         'Model Number': range(1, 6),
         'Thickness': np.random.rand(5) * 10  # Random thickness for demonstration
         })
-        st.table(model_data)
+        st.data_editor(model_data)
     with col3:
-        st.subheader('Plot')
+        containerPlot = st.container(border=True)
 
-        if uploadFile is not None:
-            fig, ax = plt.subplots()
-            ax.plot(df['AB/2'], df['RhoApp'])
-            ax.set_xlabel(f'AB/2')
-            ax.set_ylabel(f'RhoApp')
-            st.pyplot(fig)
+        with containerPlot:
 
-    # Table with model parameters
-    model_params = st.container()
-    # Display model numbers and thickness in a table
-    
+            tab1, tab2 = st.tabs(['Inversion Model', 'Earth Model'])
+            
+            with tab1:
+                if uploadFile is not None:
+                    # fig, ax = plt.subplots()
+                    # ax.plot(df['AB/2'], df['RhoApp'])
+                    # ax.set_xlabel(f'AB/2')
+                    # ax.set_ylabel(f'RhoApp')
+                    # st.pyplot(fig)
+                    fig = px.scatter(df, x='AB/2', y='RhoApp', title='Resistivity Curve')
+                    fig.update_layout(
+                        xaxis_type="log",
+                        yaxis_type="log",
+                        xaxis_title="AB/2",
+                        yaxis_title="RhoApp"
+                    )
+                    
+                    # Display the figure in Streamlit
+                    st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
