@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    jsmith:
+      email: putu.andika@tg.itera.ac.id
+      name: Putu Pradnya Andika
+      password:$2b$12$N4T/1pqdYWgiDe/ZFcjI8eB4uBlpF0ZfO1HmkD5m6dvQIL9X7Qojq # To be replaced with hashed password
+    rbriggs:
+      email: asido.sigalingging@tg.itera.ac.id
+      name: Asido Saputra
+      password: $2b$12$N4T/1pqdYWgiDe/ZFcjI8eB4uBlpF0ZfO1HmkD5m6dvQIL9X7Qojq # To be replaced with hashed password
+cookie:
+  expiry_days: 30
+  key: tgitera # Must be string
+  name: tgitera
+preauthorized:
+  emails:
+  - putuandhika12@gmail.com
